@@ -115,9 +115,9 @@ void ClosestHitProcessor(inout HitData payload : SV_RayPayload, in BuiltInTriang
 	float3 addColor = float3(0, 0, 0);
 	if (!(RayFlags() & RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH))
 	{
-		float3 origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent() + normal * 1e-4;
+		float3 origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent();
 		float3 reflection = dot(normal, -WorldRayDirection()) * 2.0 * normal + WorldRayDirection();
-		RayDesc ray = { origin, 0.0f, reflection, 10000.0f };
+		RayDesc ray = { origin, 1e-4, reflection, 10000.0f };
 		HitData reflPayload = { float4(0, 0, 0, 0) };
 		TraceRay(Scene, RAY_FLAG_CULL_BACK_FACING_TRIANGLES | RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH, ~0, 0, 1, 0, ray, reflPayload);
 
