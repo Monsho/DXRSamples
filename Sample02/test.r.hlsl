@@ -88,7 +88,7 @@ void RayGenerator()
 }
 
 [shader("closesthit")]
-void ClosestHitProcessor(inout HitData payload : SV_RayPayload, in BuiltInTriangleIntersectionAttributes attr : SV_IntersectionAttributes)
+void ClosestHitProcessorLambert(inout HitData payload : SV_RayPayload, in BuiltInTriangleIntersectionAttributes attr : SV_IntersectionAttributes)
 {
 	// ヒットしたプリミティブインデックスからトライアングルの頂点インデックスを求める
 	uint indexOffset = PrimitiveIndex() * 2 * 3;
@@ -110,6 +110,46 @@ void ClosestHitProcessor(inout HitData payload : SV_RayPayload, in BuiltInTriang
 
 	// 平行光源のライティング計算
 	float NoL = saturate(dot(normal, -cbScene.lightDir.xyz));
+	float3 finalColor = cbInstance.matColor * cbScene.lightColor.rgb * NoL;
+
+	float3 addColor = float3(0, 0, 0);
+	if (!(RayFlags() & RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH))
+	{
+		float3 origin = WorldRayOrigin() + WorldRayDirection() * RayTCurrent();
+		float3 reflection = dot(normal, -WorldRayDirection()) * 2.0 * normal + WorldRayDirection();
+		RayDesc ray = { origin, 1e-4, reflection, 10000.0f };
+		HitData reflPayload = { float4(0, 0, 0, 0) };
+		TraceRay(Scene, RAY_FLAG_CULL_BACK_FACING_TRIANGLES | RAY_FLAG_ACCEPT_FIRST_HIT_AND_END_SEARCH, ~0, 0, 1, 0, ray, reflPayload);
+
+		addColor = reflPayload.color.rgb * 0.2f;
+	}
+
+	payload.color = float4(finalColor + addColor, 1);
+}
+
+[shader("closesthit")]
+void ClosestHitProcessorHalfLambert(inout HitData payload : SV_RayPayload, in BuiltInTriangleIntersectionAttributes attr : SV_IntersectionAttributes)
+{
+	// ヒットしたプリミティブインデックスからトライアングルの頂点インデックスを求める
+	uint indexOffset = PrimitiveIndex() * 2 * 3;
+	uint3 indices = GetTriangleIndices2byte(indexOffset);
+
+	// ヒット位置の法線を求める
+	float3 vertexNormals[3] = {
+		Vertices[indices.x].normal,
+		Vertices[indices.y].normal,
+		Vertices[indices.z].normal
+	};
+	float3 normal = vertexNormals[0] +
+		attr.barycentrics.x * (vertexNormals[1] - vertexNormals[0]) +
+		attr.barycentrics.y * (vertexNormals[2] - vertexNormals[0]);
+	normal = normalize(normal);
+
+	// 法線をワールド空間に変換する
+	normal = RotVectorByQuat(normal, cbInstance.quatRot);
+
+	// 平行光源のライティング計算
+	float NoL = dot(normal, -cbScene.lightDir.xyz) * 0.5 + 0.5;
 	float3 finalColor = cbInstance.matColor * cbScene.lightColor.rgb * NoL;
 
 	float3 addColor = float3(0, 0, 0);

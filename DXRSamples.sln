@@ -12,6 +12,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FallbackLayer", "..\Librari
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample02", "Sample02\Sample02.vcxproj", "{3937E29C-E978-4BDE-BEA4-306BF64E129F}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sample03", "Sample03\Sample03.vcxproj", "{7F34DBBB-A3BB-43CE-B131-4E602550D69B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -55,6 +57,18 @@ Global
 		{3937E29C-E978-4BDE-BEA4-306BF64E129F}.Release|x64.Build.0 = Release|x64
 		{3937E29C-E978-4BDE-BEA4-306BF64E129F}.Release|x86.ActiveCfg = Release|Win32
 		{3937E29C-E978-4BDE-BEA4-306BF64E129F}.Release|x86.Build.0 = Release|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Debug|x64.ActiveCfg = Debug|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Debug|x64.Build.0 = Debug|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Debug|x86.ActiveCfg = Debug|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Debug|x86.Build.0 = Debug|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Profile|x64.ActiveCfg = Release|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Profile|x64.Build.0 = Release|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Profile|x86.ActiveCfg = Release|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Profile|x86.Build.0 = Release|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Release|x64.ActiveCfg = Release|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Release|x64.Build.0 = Release|x64
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Release|x86.ActiveCfg = Release|Win32
+		{7F34DBBB-A3BB-43CE-B131-4E602550D69B}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
