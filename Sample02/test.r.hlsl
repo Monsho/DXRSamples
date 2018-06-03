@@ -10,6 +10,8 @@ struct InstanceCB
 {
 	float4		quatRot;
 	float4		matColor;
+	uint		voffset;
+	uint		ioffset;
 };
 
 struct Vertex
@@ -92,13 +94,13 @@ void ClosestHitProcessorLambert(inout HitData payload : SV_RayPayload, in BuiltI
 {
 	// ヒットしたプリミティブインデックスからトライアングルの頂点インデックスを求める
 	uint indexOffset = PrimitiveIndex() * 2 * 3;
-	uint3 indices = GetTriangleIndices2byte(indexOffset);
+	uint3 indices = GetTriangleIndices2byte(indexOffset + cbInstance.ioffset * 2);
 
 	// ヒット位置の法線を求める
 	float3 vertexNormals[3] = {
-		Vertices[indices.x].normal,
-		Vertices[indices.y].normal,
-		Vertices[indices.z].normal
+		Vertices[indices.x + cbInstance.voffset].normal,
+		Vertices[indices.y + cbInstance.voffset].normal,
+		Vertices[indices.z + cbInstance.voffset].normal
 	};
 	float3 normal = vertexNormals[0] +
 		attr.barycentrics.x * (vertexNormals[1] - vertexNormals[0]) +
@@ -132,13 +134,13 @@ void ClosestHitProcessorHalfLambert(inout HitData payload : SV_RayPayload, in Bu
 {
 	// ヒットしたプリミティブインデックスからトライアングルの頂点インデックスを求める
 	uint indexOffset = PrimitiveIndex() * 2 * 3;
-	uint3 indices = GetTriangleIndices2byte(indexOffset);
+	uint3 indices = GetTriangleIndices2byte(indexOffset + cbInstance.ioffset * 2);
 
 	// ヒット位置の法線を求める
 	float3 vertexNormals[3] = {
-		Vertices[indices.x].normal,
-		Vertices[indices.y].normal,
-		Vertices[indices.z].normal
+		Vertices[indices.x + cbInstance.voffset].normal,
+		Vertices[indices.y + cbInstance.voffset].normal,
+		Vertices[indices.z + cbInstance.voffset].normal
 	};
 	float3 normal = vertexNormals[0] +
 		attr.barycentrics.x * (vertexNormals[1] - vertexNormals[0]) +
