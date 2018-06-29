@@ -50,8 +50,6 @@
     </Image>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="test.r.hlsl">
-      <Filter>ソース ファイル</Filter>
-    </FxCompile>
+    <CustomBuild Include="test.r.hlsl" />
   </ItemGroup>
 </Project>
